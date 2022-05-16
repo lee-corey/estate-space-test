@@ -1,9 +1,11 @@
-import { ActivityIndicator, StyleSheet, View, Text } from "react-native";
+import { ActivityIndicator, StyleSheet, FlatList } from "react-native";
 import { useQuery } from "react-query";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { RootStackScreenProps } from "../types/navigation";
 import { User, UserResponse } from "../types/user";
+import { Text, View } from "../components/Themed";
+import UserItem from "../components/UserItem";
 import getUsers from "../api/mockaroo";
 
 export default function TabOneScreen({
@@ -13,14 +15,19 @@ export default function TabOneScreen({
     ["users"],
     (): Promise<User[]> => getUsers(1, 5).then((response) => response.entries)
   );
-  console.log(data);
+
   return (
     <View style={styles.container}>
       {isLoading ? (
-        <ActivityIndicator />
+        <ActivityIndicator size="large" />
       ) : (
-        <View>
-          <Text>{data?.length}</Text>
+        <View style={styles.mainContainer}>
+          <Text style={styles.title}>Users from mockaroo</Text>
+          <FlatList<User>
+            data={data}
+            renderItem={({ item }) => <UserItem item={item} />}
+            keyExtractor={(item) => item.id.toString()}
+          />
         </View>
       )}
     </View>
@@ -32,14 +39,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 30,
+  },
+  mainContainer: {
+    width: "100%",
+    flex: 1,
+    padding: 20,
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+    marginBottom: 15,
   },
 });
