@@ -23,7 +23,7 @@ export default function HomeScreen({
 }: RootStackScreenProps<"Home">) {
   const [page, setPage] = useState<number>(0);
 
-  const { isFetching, data, refetch } = useQuery<User[], Error>(
+  const { isFetching, data } = useQuery<User[], Error>(
     ["users", page],
     (): Promise<User[]> =>
       getUsers(page, count).then((response) => response.entries)
@@ -36,7 +36,7 @@ export default function HomeScreen({
   const onNext = () => {
     setPage((prev) => prev + 1);
   };
-  console.log(isFetching);
+
   return (
     <View style={styles.container}>
       <View style={styles.mainContainer}>
