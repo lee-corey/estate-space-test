@@ -1,21 +1,28 @@
-import { StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet, View, Text } from "react-native";
+import { useQuery } from "react-query";
 
 import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
-import { RootStackScreenProps } from "../types";
+import { RootStackScreenProps } from "../types/navigation";
+import { User, UserResponse } from "../types/user";
+import getUsers from "../api/mockaroo";
 
 export default function TabOneScreen({
   navigation,
 }: RootStackScreenProps<"Home">) {
+  const { isLoading, data, refetch } = useQuery<User[], Error>(
+    ["users"],
+    (): Promise<User[]> => getUsers(1, 5).then((response) => response.entries)
+  );
+  console.log(data);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <View>
+          <Text>{data?.length}</Text>
+        </View>
+      )}
     </View>
   );
 }
