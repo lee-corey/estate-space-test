@@ -7,10 +7,10 @@ import { User } from "../types/user";
 export default function UserItem({ item }: { item: User }) {
   return (
     <View style={styles.container}>
-      <Text>{`${item.name.firstName} ${item.name.lastName}`}</Text>
-      <Text>{item.email}</Text>
-      <Text>{item.gender}</Text>
-      <Text>{item.role}</Text>
+      <Text>{`Name: ${item.name.firstName} ${item.name.lastName}`}</Text>
+      <Text>{`Email: ${item.email}`}</Text>
+      <Text>{`Gender: ${item.gender}`}</Text>
+      <Text>{`Role: ${item.role}`}</Text>
     </View>
   );
 }
